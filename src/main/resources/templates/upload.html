@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Upload Brand</title>
+    <link rel="stylesheet" type="text/css" href="brands.css">
+</head>
+<body>
+<form action="/upload" enctype="multipart/form-data" method="post">
+    Brand Name: <input type="text" name="name" required/><br/>
+    Brand Image: <input type="file" name="file" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" required/><br/>
+    <div class="square"><img id="blah" alt="Image Preview"/></div><br/>
+
+    <button type="submit">Upload</button>
+</form>
+
+<div class="links">
+    <a href="/">Return to Voting</a>
+</div>
+
+</body>
+</html>

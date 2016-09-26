@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="brands.css">
+</head>
+<body>
+{{^user}}
+<form action="/login" method="post">
+    <input type="text" placeholder="Username" name="userName" required/>
+    <input type="password" placeholder="Password" name="password" required/>
+    <button type="submit">Login</button>
+</form>
+{{/user}}
+
+{{#user}}
+Welcome, {{name}}!
+<form action="/logout" method="post">
+    <button type="submit">Logout</button>
+</form>
+<br/>
+
+<div class="links">
+    <a href="/">Return to Voting</a>
+</div>
+
+<table width="75%" align="center">
+    <tr>
+        <th>Brand Name</th>
+        <th>Brand Image</th>
+        <th>Vote Count</th>
+        <th>Unknown Count</th>
+        <th>Delete</th></td>
+    </tr>
+{{#brands}}
+    <tr align="center">
+        <td>{{name}}</td>
+        <td><div class="square"><img src="files/{{image.filename}}"></div></td>
+        <td>{{voteCount}}</td>
+        <td>{{unknownCount}}</td>
+        <td>
+            <form action="/delete" method="post">
+                <input type="hidden" name="id" value="{{id}}">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+{{/brands}}
+</table>
+
+{{/user}}
+</body>
+</html>

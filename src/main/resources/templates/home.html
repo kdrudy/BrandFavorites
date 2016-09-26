@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brand Favorites</title>
+    <link rel="stylesheet" type="text/css" href="brands.css">
+
+</head>
+<body>
+
+<table width="90%" align="center">
+    <tr align="center">
+        <td>
+            <div class="voteDisplay"><img src="files/{{firstImage.filename}}"></div>
+        </td>
+        <td>
+            <div class="voteDisplay"><img src="files/{{secondImage.filename}}"></div>
+        </td>
+    </tr>
+    <tr align="center">
+        <td>
+            {{first.name}}
+        </td>
+        <td>
+            {{second.name}}
+        </td>
+    </tr>
+    <tr align="center">
+        <td>
+            <form action="/vote" method="post">
+                <input type="hidden" name="id" value="{{first.id}}"/>
+                <button type="submit">Vote</button>
+            </form>
+        </td>
+        <td>
+            <form action="/vote" method="post">
+                <input type="hidden" name="id" value="{{second.id}}"/>
+                <button type="submit">Vote</button>
+            </form>
+        </td>
+    </tr>
+    <tr align="center">
+        <td>
+            <form action="/unknown" method="post">
+                <input type="hidden" name="id" value="{{first.id}}"/>
+                <button type="submit">Unknown Brand</button>
+            </form>
+        </td>
+        <td>
+            <form action="/unknown" method="post">
+                <input type="hidden" name="id" value="{{first.id}}"/>
+                <button type="submit">Unknown Brand</button>
+            </form>
+        </td>
+    </tr>
+</table>
+
+<div class="links">
+    <a href="/upload">Upload a new Brand</a>
+    <a href="/rankings">Brand Rankings</a>
+</div>
+</body>
+</html>

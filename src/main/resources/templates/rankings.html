@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brand Rankings</title>
+    <link rel="stylesheet" type="text/css" href="brands.css">
+
+</head>
+<body>
+
+<table width="75%" align="center">
+    <tr>
+        <th>Brand Name</th>
+        <th>Brand Image</th>
+        <th>Vote Count</th>
+    </tr>
+    {{#brands}}
+    <tr align="center">
+        <td>{{name}}</td>
+        <td><div class="square"><img src="files/{{image.filename}}"></div></td>
+        <td>{{voteCount}}</td>
+    </tr>
+    {{/brands}}
+</table>
+
+<div class="links">
+    <a href="/">Return to Voting</a>
+</div>
+
+
+</body>
+</html>
