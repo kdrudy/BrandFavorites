@@ -1,9 +1,7 @@
 package com.kyrutech.controllers;
 
 import com.kyrutech.entities.Brand;
-import com.kyrutech.entities.BrandImage;
 import com.kyrutech.entities.User;
-import com.kyrutech.services.BrandImageRepository;
 import com.kyrutech.services.BrandRepository;
 import com.kyrutech.services.UserRepository;
 import com.kyrutech.utilities.PasswordStorage;
@@ -13,13 +11,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -35,38 +31,73 @@ public class BrandFavoritesController {
     @Autowired
     BrandRepository brands;
 
-    @Autowired
-    BrandImageRepository brandImages;
+
+    //TODO Bad way to handle this, find better solution
+    int oldFirstId = -1;
+    int oldSecondId = -1;
 
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model) {
-        //TODO Get two random brands
+
         long brandCount = brands.count();
 
+        ArrayList<Brand> brandList = (ArrayList<Brand>) brands.findAll();
+
+        //Get the first brand
         int firstBrand = (int) (Math.random()*brandCount);
+        Brand first = brandList.get(firstBrand);
+
+        while(first.getId() == oldFirstId || first.getId() == oldSecondId) {
+            firstBrand = (int) (Math.random()*brandCount);
+            first = brandList.get(firstBrand);
+        }
+
+        //Get the second brand
         int secondBrand = (int) (Math.random()*brandCount);
         while(firstBrand == secondBrand) {
             secondBrand = (int) (Math.random()*brandCount);
         }
-
-        ArrayList<Brand> brandList = (ArrayList<Brand>) brands.findAll();
-
-        Brand first = brandList.get(firstBrand);
         Brand second = brandList.get(secondBrand);
 
+        while(second.getId() == oldFirstId || second.getId() == oldSecondId) {
+            secondBrand = (int) (Math.random()*brandCount);
+            while(firstBrand == secondBrand) {
+                secondBrand = (int) (Math.random()*brandCount);
+            }
+            second = brandList.get(secondBrand);
+        }
+
         model.addAttribute("first", first);
-        model.addAttribute("firstImage", first.getImage());
         model.addAttribute("second", second);
-        model.addAttribute("secondImage", second.getImage());
 
         return "home";
     }
 
     @RequestMapping(path = "/vote", method = RequestMethod.POST)
-    public String vote(Integer id, HttpServletResponse response) {
-        Brand brand = brands.findOne(id);
-        brand.setVoteCount(brand.getVoteCount() + 1);
-        brands.save(brand);
+    public String vote(Integer id, Integer loserId, HttpServletResponse response, RedirectAttributes attributes) {
+        Brand winner = brands.findOne(id);
+        Brand loser = brands.findOne(loserId);
+        winner.setVoteCount(winner.getVoteCount() + 1);
+
+        int wElo = winner.getEloRating();
+        int lElo = loser.getEloRating();
+        double wTRating = Math.pow(10, wElo/400);
+        double lTRating = Math.pow(10, lElo/400);
+
+        double wExpected = wTRating / (wTRating + lTRating);
+        double lExpected = lTRating / (wTRating + lTRating);
+
+        wElo = (int) (wElo + (32 * (1d-wExpected)));
+        lElo = (int) (lElo + (32 * (0d-lExpected)));
+
+        winner.setEloRating(wElo);
+        loser.setEloRating(lElo);
+
+        brands.save(winner);
+        brands.save(loser);
+
+        oldFirstId = winner.getId();
+        oldSecondId = loser.getId();
 
         return "redirect:/";
     }
@@ -76,6 +107,8 @@ public class BrandFavoritesController {
         Brand brand = brands.findOne(id);
         brand.setUnknownCount(brand.getUnknownCount() + 1);
         brands.save(brand);
+
+        oldFirstId = brand.getId();
 
         return "redirect:/";
     }
@@ -94,17 +127,9 @@ public class BrandFavoritesController {
     }
 
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
-    public String upload(MultipartFile file, String name, HttpServletResponse response) throws IOException {
-        File dir = new File("public/files");
-        dir.mkdirs();
-        File f = File.createTempFile("file", file.getOriginalFilename(), dir);
-        FileOutputStream fos = new FileOutputStream(f);
-        fos.write(file.getBytes());
+    public String upload(String name, String imageLink, HttpServletResponse response) throws IOException {
 
-        BrandImage bi = new BrandImage(f.getName(), file.getOriginalFilename());
-        brandImages.save(bi);
-
-        Brand brand = new Brand(name, bi);
+        Brand brand = new Brand(name, imageLink);
         brands.save(brand);
 
         return "upload";

@@ -8,7 +8,7 @@
 <body>
 <form action="/upload" enctype="multipart/form-data" method="post">
     Brand Name: <input type="text" name="name" required/><br/>
-    Brand Image: <input type="file" name="file" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])" required/><br/>
+    Brand Image Link: <input type="text" name="imageLink" onchange="document.getElementById('blah').src = this.value" required/><br/>
     <div class="square"><img id="blah" alt="Image Preview"/></div><br/>
 
     <button type="submit">Upload</button>

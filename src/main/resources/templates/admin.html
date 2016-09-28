@@ -31,14 +31,16 @@ Welcome, {{name}}!
         <th>Brand Image</th>
         <th>Vote Count</th>
         <th>Unknown Count</th>
-        <th>Delete</th></td>
+        <th>ELO Rating</th>
+        <th>Delete</th>
     </tr>
 {{#brands}}
     <tr align="center">
         <td>{{name}}</td>
-        <td><div class="square"><img src="files/{{image.filename}}"></div></td>
+        <td><div class="square"><img src="{{imageLink}}"></div></td>
         <td>{{voteCount}}</td>
         <td>{{unknownCount}}</td>
+        <td>{{eloRating}}</td>
         <td>
             <form action="/delete" method="post">
                 <input type="hidden" name="id" value="{{id}}">

@@ -11,10 +11,10 @@
 <table width="90%" align="center">
     <tr align="center">
         <td>
-            <div class="voteDisplay"><img src="files/{{firstImage.filename}}"></div>
+            <div class="voteDisplay"><img src="{{first.imageLink}}"></div>
         </td>
         <td>
-            <div class="voteDisplay"><img src="files/{{secondImage.filename}}"></div>
+            <div class="voteDisplay"><img src="{{second.imageLink}}"></div>
         </td>
     </tr>
     <tr align="center">
@@ -29,12 +29,14 @@
         <td>
             <form action="/vote" method="post">
                 <input type="hidden" name="id" value="{{first.id}}"/>
+                <input type="hidden" name="loserId" value="{{second.id}}"/>
                 <button type="submit">Vote</button>
             </form>
         </td>
         <td>
             <form action="/vote" method="post">
                 <input type="hidden" name="id" value="{{second.id}}"/>
+                <input type="hidden" name="loserId" value="{{first.id}}"/>
                 <button type="submit">Vote</button>
             </form>
         </td>

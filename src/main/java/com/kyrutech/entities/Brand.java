@@ -21,16 +21,20 @@ public class Brand {
     @Column
     int unknownCount;
 
-    @OneToOne
-    BrandImage image;
+    @Column
+    String imageLink;
+
+    @Column
+    int eloRating;
 
     public Brand() {
 
     }
 
-    public Brand(String name, BrandImage image) {
+    public Brand(String name, String imageLink) {
         this.name = name;
-        this.image = image;
+        this.imageLink = imageLink;
+        this.eloRating = 1000;
     }
 
     public int getId() {
@@ -65,11 +69,19 @@ public class Brand {
         this.unknownCount = unknownCount;
     }
 
-    public BrandImage getImage() {
-        return image;
+    public String getImageLink() {
+        return imageLink;
     }
 
-    public void setImage(BrandImage image) {
-        this.image = image;
+    public void setImageLink(String imageLink) {
+        this.imageLink = imageLink;
+    }
+
+    public int getEloRating() {
+        return eloRating;
+    }
+
+    public void setEloRating(int eloRating) {
+        this.eloRating = eloRating;
     }
 }
