@@ -116,7 +116,7 @@ public class BrandFavoritesController {
     @RequestMapping(path = "/rankings", method = RequestMethod.GET)
     public String rankings(HttpSession session, Model model) {
 
-        model.addAttribute("brands", brands.findAll(new Sort(Sort.Direction.DESC, "voteCount")));
+        model.addAttribute("brands", brands.findAll(new Sort(Sort.Direction.DESC, "eloRating")));
 
         return "rankings";
     }
@@ -136,12 +136,18 @@ public class BrandFavoritesController {
     }
 
     @RequestMapping(path = "/admin")
-    public String admin(HttpSession session, Model model) {
+    public String admin(String order, HttpSession session, Model model) {
         String userName = (String) session.getAttribute("userName");
         User user = users.findFirstByName(userName);
         if (user != null) {
             model.addAttribute("user", user);
-            model.addAttribute("brands", brands.findAll(new Sort(Sort.Direction.DESC, "voteCount")));
+            if(order!=null && order.equalsIgnoreCase("elorating")) {
+                model.addAttribute("brands", brands.findAll(new Sort(Sort.Direction.DESC, "eloRating")));
+            } else if(order != null && order.equalsIgnoreCase("unknown")) {
+                model.addAttribute("brands", brands.findAll(new Sort(Sort.Direction.DESC, "unknownCount")));
+            } else {
+                model.addAttribute("brands", brands.findAll(new Sort(Sort.Direction.DESC, "voteCount")));
+            }
         }
 
         return "admin";
