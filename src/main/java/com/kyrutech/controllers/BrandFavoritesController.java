@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -31,13 +32,20 @@ public class BrandFavoritesController {
     @Autowired
     BrandRepository brands;
 
-
-    //TODO Bad way to handle this, find better solution
-    int oldFirstId = -1;
-    int oldSecondId = -1;
-
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model) {
+
+
+        Integer oldFirstId = (Integer) model.asMap().get("oldFirst");
+        Integer oldSecondId = (Integer) model.asMap().get("oldSecond");
+
+        if(oldFirstId == null) {
+            oldFirstId = -1;
+        }
+
+        if(oldSecondId == null) {
+            oldSecondId = -1;
+        }
 
         long brandCount = brands.count();
 
@@ -96,19 +104,19 @@ public class BrandFavoritesController {
         brands.save(winner);
         brands.save(loser);
 
-        oldFirstId = winner.getId();
-        oldSecondId = loser.getId();
+        attributes.addFlashAttribute("oldFirst", winner.getId());
+        attributes.addFlashAttribute("oldSecond", loser.getId());
 
         return "redirect:/";
     }
 
     @RequestMapping(path = "/unknown", method = RequestMethod.POST)
-    public String unknown(Integer id, HttpServletResponse response) {
+    public String unknown(Integer id, HttpServletResponse response, RedirectAttributes attributes) {
         Brand brand = brands.findOne(id);
         brand.setUnknownCount(brand.getUnknownCount() + 1);
         brands.save(brand);
 
-        oldFirstId = brand.getId();
+        attributes.addFlashAttribute("oldFirst", brand.getId());
 
         return "redirect:/";
     }
