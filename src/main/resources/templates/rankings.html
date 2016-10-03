@@ -2,31 +2,43 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Brand Rankings</title>
+
     <link rel="stylesheet" type="text/css" href="brands.css">
 
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 
-<table width="75%" align="center">
-    <tr>
-        <th>Brand Name</th>
-        <th>Brand Image</th>
-        <th>ELO Rating</th>
-    </tr>
-    {{#brands}}
-    <tr align="center">
-        <td>{{name}}</td>
-        <td><div class="square"><img src="{{imageLink}}"></div></td>
-        <td>{{eloRating}}</td>
-    </tr>
-    {{/brands}}
-</table>
-
-<div class="links">
-    <a href="/">Return to Voting</a>
+<div class="container col-md-12">
+    <h2 align="center">Brand Rankings</h2>
+    <div class="links">
+        <a href="/">Return to Voting</a>
+    </div>
 </div>
-
-
+<div class="container col-md-8 col-md-offset-2">
+    <table align="center" class="table table-bordered vertical-aligned">
+        <tr>
+            <th>Brand Name</th>
+            <th>Brand Image</th>
+            <th>ELO Rating</th>
+        </tr>
+        {{#brands}}
+        <tr align="center">
+            <td>{{name}}</td>
+            <td><div class="square"><img src="{{imageLink}}"></div></td>
+            <td>{{eloRating}}</td>
+        </tr>
+        {{/brands}}
+    </table>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>

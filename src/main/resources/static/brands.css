@@ -19,12 +19,22 @@ img {
     align-items:center;
 }
 
+/*
 table {
     border-collapse: collapse;
 }
 
 table, th, td {
    border: 1px solid black;
+}
+*/
+
+.table th {
+    text-align:center;
+}
+
+table.table-bordered.vertical-aligned > tbody > tr > td {
+     vertical-align: middle;
 }
 
 .links {

@@ -2,55 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Admin</title>
     <link rel="stylesheet" type="text/css" href="brands.css">
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 {{^user}}
-<form action="/login" method="post">
-    <input type="text" placeholder="Username" name="userName" required/>
-    <input type="password" placeholder="Password" name="password" required/>
-    <button type="submit">Login</button>
-</form>
+<div class="container col-md-12">
+    <h2>Admin Login</h2>
+    <form action="/login" method="post" class="form-inline">
+        <div class="form-group">
+            <label class="sr-only">Username</label>
+            <input type="text" class="form-control" placeholder="Username" name="userName" required/>
+            <label class="sr-only">Password</label>
+            <input type="password" class="form-control" placeholder="Password" name="password" required/>
+            <button class="btn btn-default" type="submit">Login</button>
+        </div>
+    </form>
+</div>
 {{/user}}
 
 {{#user}}
-Welcome, {{name}}!
-<form action="/logout" method="post">
-    <button type="submit">Logout</button>
-</form>
-<br/>
+<div class="container col-md-12">
+    <h3>Welcome, {{name}}!</h3>
+    <form action="/logout" method="post">
+        <button class="btn btn-default" type="submit">Logout</button>
+    </form>
+</div>
 
-<div class="links">
+<div class="links col-md-12">
     <a href="/">Return to Voting</a>
 </div>
 
-<table width="75%" align="center">
-    <tr>
-        <th>Brand Name</th>
-        <th>Brand Image</th>
-        <th><a href="/admin">Vote Count</a></th>
-        <th><a href="/admin?order=unknown">Unknown Count</a></th>
-        <th><a href="/admin?order=elorating">ELO Rating</a></th>
-        <th>Delete</th>
-    </tr>
-{{#brands}}
-    <tr align="center">
-        <td>{{name}}</td>
-        <td><div class="square"><img src="{{imageLink}}"></div></td>
-        <td>{{voteCount}}</td>
-        <td>{{unknownCount}}</td>
-        <td>{{eloRating}}</td>
-        <td>
-            <form action="/delete" method="post">
-                <input type="hidden" name="id" value="{{id}}">
-                <button type="submit">Delete</button>
-            </form>
-        </td>
-    </tr>
-{{/brands}}
-</table>
-
+<div class="container col-md-8 col-md-offset-2">
+    <table align="center" class="table table-bordered vertical-aligned">
+        <tr>
+            <th>Brand Name</th>
+            <th>Brand Image</th>
+            <th><a href="/admin">Vote Count</a></th>
+            <th><a href="/admin?order=unknown">Unknown Count</a></th>
+            <th><a href="/admin?order=elorating">ELO Rating</a></th>
+            <th>Delete</th>
+        </tr>
+    {{#brands}}
+        <tr align="center">
+            <td>{{name}}</td>
+            <td><div class="square"><img src="{{imageLink}}"></div></td>
+            <td>{{voteCount}}</td>
+            <td>{{unknownCount}}</td>
+            <td>{{eloRating}}</td>
+            <td>
+                <form action="/delete" method="post">
+                    <input type="hidden" name="id" value="{{id}}">
+                    <button class="btn btn-danger" type="submit">Delete</button>
+                </form>
+            </td>
+        </tr>
+    {{/brands}}
+    </table>
+</div>
 {{/user}}
 </body>
 </html>

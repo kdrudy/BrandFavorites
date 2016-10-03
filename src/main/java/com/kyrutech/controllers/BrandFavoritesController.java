@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -195,7 +194,17 @@ public class BrandFavoritesController {
             user.setPassword(PasswordStorage.createHash("adm1n"));
             user.setAdmin(true);
             users.save(user);
+        }
 
+        if(brands.count() == 0) {
+            brands.save(new Brand("3M", "http://i.imgur.com/0hk3g7f.jpg"));
+            brands.save(new Brand("Coke", "http://i.imgur.com/9tf4MaH.jpg"));
+            brands.save(new Brand("Pepsi", "http://i.imgur.com/zLBDPip.png"));
+            brands.save(new Brand("kyrutech", "http://i.imgur.com/zX6eGME.jpg"));
+            brands.save(new Brand("McDonald’s", "http://i.imgur.com/Ct8ods3.png"));
+            brands.save(new Brand("The Iron Yard", "http://i.imgur.com/g4CyapS.png"));
+            brands.save(new Brand("Nike", "http://i.imgur.com/KLoGsFb.jpg"));
+            brands.save(new Brand("Twitter", "http://i.imgur.com/nR9sBUu.png"));
         }
     }
 }

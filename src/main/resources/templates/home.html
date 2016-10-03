@@ -2,64 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <title>Brand Favorites</title>
     <link rel="stylesheet" type="text/css" href="brands.css">
 
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
 </head>
 <body>
-
-<table width="90%" align="center">
-    <tr align="center">
-        <td>
-            <div class="voteDisplay"><img src="{{first.imageLink}}"></div>
-        </td>
-        <td>
-            <div class="voteDisplay"><img src="{{second.imageLink}}"></div>
-        </td>
-    </tr>
-    <tr align="center">
-        <td>
-            {{first.name}}
-        </td>
-        <td>
-            {{second.name}}
-        </td>
-    </tr>
-    <tr align="center">
-        <td>
-            <form action="/vote" method="post">
-                <input type="hidden" name="id" value="{{first.id}}"/>
-                <input type="hidden" name="loserId" value="{{second.id}}"/>
-                <button type="submit">Vote</button>
-            </form>
-        </td>
-        <td>
-            <form action="/vote" method="post">
-                <input type="hidden" name="id" value="{{second.id}}"/>
-                <input type="hidden" name="loserId" value="{{first.id}}"/>
-                <button type="submit">Vote</button>
-            </form>
-        </td>
-    </tr>
-    <tr align="center">
-        <td>
-            <form action="/unknown" method="post">
-                <input type="hidden" name="id" value="{{first.id}}"/>
-                <button type="submit">Unknown Brand</button>
-            </form>
-        </td>
-        <td>
-            <form action="/unknown" method="post">
-                <input type="hidden" name="id" value="{{first.id}}"/>
-                <button type="submit">Unknown Brand</button>
-            </form>
-        </td>
-    </tr>
-</table>
-
-<div class="links">
-    <a href="/upload">Upload a new Brand</a>
-    <a href="/rankings">Brand Rankings</a>
+<div class="container col-md-12">
+    <h2 align="center">Brand Voting</h2>
 </div>
+<div class="contianer col-md-10 col-md-offset-1">
+    <table align="center" class="table table-bordered">
+        <tr align="center">
+            <td>
+                <div class="voteDisplay"><img src="{{first.imageLink}}"></div>
+            </td>
+            <td>
+                <div class="voteDisplay"><img src="{{second.imageLink}}"></div>
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                {{first.name}}
+            </td>
+            <td>
+                {{second.name}}
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <form action="/vote" method="post">
+                    <input type="hidden" name="id" value="{{first.id}}"/>
+                    <input type="hidden" name="loserId" value="{{second.id}}"/>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Vote</button>
+                </form>
+            </td>
+            <td>
+                <form action="/vote" method="post">
+                    <input type="hidden" name="id" value="{{second.id}}"/>
+                    <input type="hidden" name="loserId" value="{{first.id}}"/>
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Vote</button>
+                </form>
+            </td>
+        </tr>
+        <tr align="center">
+            <td>
+                <form action="/unknown" method="post">
+                    <input type="hidden" name="id" value="{{first.id}}"/>
+                    <button class="btn btn-default btn-sm" type="submit">Unknown Brand</button>
+                </form>
+            </td>
+            <td>
+                <form action="/unknown" method="post">
+                    <input type="hidden" name="id" value="{{first.id}}"/>
+                    <button class="btn btn-default btn-sm"  type="submit">Unknown Brand</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="links col-md-10 col-md-offset-1">
+    <a href="/rankings">Brand Rankings</a><br/>
+    <a href="/upload">Upload a new Brand</a>
+</div>
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
