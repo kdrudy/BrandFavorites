@@ -1,16 +1,22 @@
 package com.kyrutech.controllers;
 
+import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.transfer.TransferManager;
 import com.kyrutech.entities.Brand;
 import com.kyrutech.entities.User;
 import com.kyrutech.services.BrandRepository;
 import com.kyrutech.services.UserRepository;
 import com.kyrutech.utilities.PasswordStorage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
@@ -31,9 +37,15 @@ public class BrandFavoritesController {
     @Autowired
     BrandRepository brands;
 
+    @Autowired
+    private AmazonS3 amazonS3;
+
+    @Value("${cloud.aws.s3.bucket}")
+    String bucket;
+
+
     @RequestMapping(path = "/", method = RequestMethod.GET)
     public String home(HttpSession session, Model model) {
-
 
         Integer oldFirstId = (Integer) model.asMap().get("oldFirst");
         Integer oldSecondId = (Integer) model.asMap().get("oldSecond");
@@ -61,18 +73,15 @@ public class BrandFavoritesController {
 
         //Get the second brand
         int secondBrand = (int) (Math.random()*brandCount);
-        while(firstBrand == secondBrand) {
-            secondBrand = (int) (Math.random()*brandCount);
-        }
         Brand second = brandList.get(secondBrand);
 
-        while(second.getId() == oldFirstId || second.getId() == oldSecondId) {
+        while(second.getId() == oldFirstId || second.getId() == oldSecondId || firstBrand == secondBrand) {
             secondBrand = (int) (Math.random()*brandCount);
-            while(firstBrand == secondBrand) {
-                secondBrand = (int) (Math.random()*brandCount);
-            }
             second = brandList.get(secondBrand);
         }
+
+//        System.out.printf("%d:%d:%d:%d", oldFirstId, oldSecondId, firstBrand, secondBrand);
+//        System.out.println();
 
         model.addAttribute("first", first);
         model.addAttribute("second", second);
@@ -134,9 +143,11 @@ public class BrandFavoritesController {
     }
 
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
-    public String upload(String name, String imageLink, HttpServletResponse response) throws IOException {
+    public String upload(String name, MultipartFile file, HttpServletResponse response) throws IOException {
+        TransferManager tm = new TransferManager(amazonS3);
+        tm.upload(bucket, file.getOriginalFilename(), file.getInputStream(), new ObjectMetadata());
 
-        Brand brand = new Brand(name, imageLink);
+        Brand brand = new Brand(name, file.getOriginalFilename());
         brands.save(brand);
 
         return "upload";
@@ -197,14 +208,8 @@ public class BrandFavoritesController {
         }
 
         if(brands.count() == 0) {
-            brands.save(new Brand("3M", "http://i.imgur.com/0hk3g7f.jpg"));
-            brands.save(new Brand("Coke", "http://i.imgur.com/9tf4MaH.jpg"));
-            brands.save(new Brand("Pepsi", "http://i.imgur.com/zLBDPip.png"));
-            brands.save(new Brand("kyrutech", "http://i.imgur.com/zX6eGME.jpg"));
-            brands.save(new Brand("McDonald’s", "http://i.imgur.com/Ct8ods3.png"));
-            brands.save(new Brand("The Iron Yard", "http://i.imgur.com/g4CyapS.png"));
-            brands.save(new Brand("Nike", "http://i.imgur.com/KLoGsFb.jpg"));
-            brands.save(new Brand("Twitter", "http://i.imgur.com/nR9sBUu.png"));
+            brands.save(new Brand("Pepsi", "pepsi.png"));
+            brands.save(new Brand("kyrutech", "kyrutech.jpg"));
         }
     }
 }

@@ -9,21 +9,22 @@
     <link rel="stylesheet" type="text/css" href="brands.css">
 
     <!-- Bootstrap -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
 
 </head>
 <body>
 <div class="container col-md-12">
-    <h2 align="center">Brand Voting</h2>
+    <h2 align="center">Better Brand?</h2>
 </div>
-<div class="contianer col-md-10 col-md-offset-1">
+<div class="container col-md-10 col-md-offset-1">
     <table align="center" class="table table-bordered">
         <tr align="center">
             <td>
-                <div class="voteDisplay"><img src="{{first.imageLink}}"></div>
+                <div class="voteDisplay"><img src="http://brandfavorites.s3.amazonaws.com/{{first.imageLink}}"></div>
             </td>
             <td>
-                <div class="voteDisplay"><img src="{{second.imageLink}}"></div>
+                <div class="voteDisplay"><img src="http://brandfavorites.s3.amazonaws.com/{{second.imageLink}}"></div>
             </td>
         </tr>
         <tr align="center">
@@ -67,14 +68,14 @@
     </table>
 </div>
 
-<div class="links col-md-10 col-md-offset-1">
+<div class="links">
     <a href="/rankings">Brand Rankings</a><br/>
     <a href="/upload">Upload a new Brand</a>
 </div>
-
-<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<!-- Include all compiled plugins (below), or include individual files as needed -->
-<script src="js/bootstrap.min.js"></script>
+<br/>
+<br/>
+<script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
 </body>
 </html>
