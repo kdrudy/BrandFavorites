@@ -176,6 +176,8 @@ public class BrandFavoritesController {
         String userName = (String) session.getAttribute("userName");
         User user = users.findFirstByName(userName);
         if (user != null && user.isAdmin()) {
+            Brand brand = brands.findOne(id);
+            amazonS3.deleteObject(bucket, brand.getImageLink());
             brands.delete(id);
         }
         return "redirect:/admin";
